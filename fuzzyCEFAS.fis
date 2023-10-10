@@ -1,0 +1,39 @@
+[System]
+Name='fuzzyCEFAS'
+Type='mamdani'
+Version=2.0
+NumInputs=1
+NumOutputs=1
+NumRules=5
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='error'
+Range=[-200 200]
+NumMFs=5
+MF1='HTEMP':'gaussmf',[55 -96.0526315789473]
+MF2='OK':'gaussmf',[42.5 9.20684210526318]
+MF3='CLOSETEMP':'gaussmf',[42.5 76.3157894736844]
+MF4='LTEMP':'gaussmf',[42.5 135.526315789474]
+MF5='VLTEMP':'gaussmf',[34.8 194.578947368421]
+
+[Output1]
+Name='Energy'
+Range=[0 4]
+NumMFs=5
+MF1='DROP':'trimf',[-1.67 0 0.345394736842105]
+MF2='HEAT':'trimf',[1.65736842105263 2.47736842105263 3.26036842105263]
+MF3='RAMP':'trimf',[2.43826315789474 4.10526315789474 5.77226315789474]
+MF4='STEADY':'trimf',[0.49 1.23 1.9046052631579]
+MF5='CLOSE':'trimf',[1.07789473684211 1.88789473684211 2.65789473684211]
+
+[Rules]
+1, 1 (1) : 1
+2, 4 (1) : 1
+3, 5 (1) : 1
+4, 2 (1) : 1
+5, 3 (1) : 1
