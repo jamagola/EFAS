@@ -6,6 +6,7 @@ clc; clear all; close all;
 
 %% Set parameter
 Reward=readfis('Reward.fis')
+load idpoly
 % Observation info
 % State >= 0
 obsInfo = rlNumericSpec([3 1],'LowerLimit',[-1.5 -inf 0]','UpperLimit',[ inf  inf inf]');
@@ -26,7 +27,7 @@ env.ResetFcn = @(in)localResetFcn(in);
 
 % In seconds
 Ts = 1.2273;
-Tf = 200;
+Tf = 1000;
 gamma=4;
 rng(0);
 
@@ -110,13 +111,13 @@ agent.AgentOptions.ActorOptimizerOptions.GradientThreshold = 1;
 
 %% Train agent
 trainOpts = rlTrainingOptions(...
-    'MaxEpisodes',100, ...
+    'MaxEpisodes',1000, ...
     'MaxStepsPerEpisode',ceil(Tf/Ts), ...
     'ScoreAveragingWindowLength',20, ...
     'Verbose',false, ...
     'Plots',"training-progress",...
     'StopTrainingCriteria',"AverageReward",...
-    'StopTrainingValue',800); %%%%%%%%%%%%%%%%%%ATTENTION%%%%%%%%%%%%%%%%%%%%
+    'StopTrainingValue',50000); %%%%%%%%%%%%%%%%%%ATTENTION%%%%%%%%%%%%%%%%%%%%
 
 doTraining = true; %%%%%%%%%%% TRUE %%%%%%%%%%%%%
 
@@ -125,7 +126,8 @@ if doTraining
     trainingStats = train(agent,env,trainOpts);
 else
     % Load the pretrained agent for the example.
-    load("xyz.mat","agent") %%% SAVE TRAINED AGENT FIRST %%%
+    % save('RLagent','agent')
+    load("RLagen.mat","agent") %%% SAVE TRAINED AGENT FIRST %%%
 end
 
 %% Reset
